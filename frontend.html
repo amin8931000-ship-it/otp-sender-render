@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<title>OTP Sender</title>
+</head>
+<body>
+<h2>OTP পাঠান</h2>
+<label>ফোন নম্বর:</label><br>
+<input type="text" id="phone" placeholder="নম্বার লিখুন" /><br><br>
+
+<label>কতবার OTP পাঠাবেন:</label><br>
+<input type="number" id="count" placeholder="উদাঃ 5" /><br><br>
+
+<button onclick="sendOTP()">OTP পাঠান</button>
+<p id="status"></p>
+
+<script>
+async function sendOTP() {
+    const number = document.getElementById('phone').value;
+    const count = parseInt(document.getElementById('count').value) || 1;
+    document.getElementById('status').innerText = "Sending OTPs...";
+
+    try {
+        const res = await fetch('https://your-render-url/send-otp', { // Render URL বসাও
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ phone: number, count: count })
+        });
+        const data = await res.json();
+        document.getElementById('status').innerText = data.message;
+    } catch(err) {
+        document.getElementById('status').innerText = "Error: " + err;
+    }
+}
+</script>
+</body>
+</html>
